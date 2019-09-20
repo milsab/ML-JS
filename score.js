@@ -9,8 +9,8 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 }
 
 function runAnalysis() {
-  const testSize = 100;
-  const [testSet, trainingSet] = splitData(output, testSize);
+  const testSize = 50;
+  const [testSet, trainingSet] = splitData(minMaxNormalization(output, 3), testSize);
   
   // Old Style Code
   // let numberOfCorrect = 0;
@@ -38,7 +38,7 @@ function knn(data, point, k){
   .map(row => {
     return [
       distance(_.initial(row), point), 
-      _.last(row[3])
+      _.last(row)
     ];
   })
   .sortBy(row => row[0])
@@ -66,5 +66,22 @@ function splitData(data, testCount){
   const trainingSet = _.slice(shuffled, testCount);
 
   return [testSet, trainingSet];
+}
+
+function minMaxNormalization(data, featureCount){
+  const clonedData = _.cloneDeep(data);
+  
+  // Normalize each feature
+  for(let i = 0; i < featureCount; i++){
+    const feature = clonedData.map(row => row[i]);
+    
+    const min = _.min(feature);
+    const max = _.max(feature);
+
+    for(let j = 0; j < clonedData,length; j++){
+      clonedData[j][i] = (clonedData[j][i] - min) / (max - min);
+    }
+  }
+  return clonedData;
 }
 

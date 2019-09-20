@@ -11,6 +11,8 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 function runAnalysis() {
   const testSize = 100;
   const [testSet, trainingSet] = splitData(output, testSize);
+  
+  // Old Style Code
   // let numberOfCorrect = 0;
   // for(let i = 0; i < testSet.length; i++){
   //   const bucket = knn(trainingSet, testSet[i][0]);
